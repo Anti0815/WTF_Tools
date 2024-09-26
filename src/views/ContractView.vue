@@ -2,6 +2,7 @@
 import { ref } from "vue";
 
 import ContractPreview from "../components/ContractPreview.vue";
+import ContractDetail from "../components/ContractDetail.vue";
 
 const contracts = ref([
   { id: 1, title: "My journey with Vue" },
@@ -22,9 +23,7 @@ const contracts = ref([
       <div class="col-4 contract-preview">
         <div class="p-3 border">1 of two columns</div>
       </div>
-      <div class="col-4 contract-preview">
-        C
-      </div>
+      <div class="col-4 contract-preview">C</div>
       <div class="col-4 contract-preview">
         <div class="p-3 border">3 of two columns</div>
       </div>
@@ -36,5 +35,8 @@ const contracts = ref([
         :cssS="'col-4'"
       />
     </div>
+  </div>
+  <div class="container" id="contract-detail">
+    <ContractDetail :cssS="'col'" />
   </div>
 </template>
