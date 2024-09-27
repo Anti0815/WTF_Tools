@@ -22,5 +22,5 @@ const props = defineProps({
   css: String,
   id: String,
 });
-console.log(props.title);
+// console.log(props.title);
 </script>
