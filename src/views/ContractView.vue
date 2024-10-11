@@ -4,6 +4,20 @@
   </div>
   <div class="container" id="contract-overview">
     <div class="row gx-3 gy-3">
+      <div v-if="isError">Something went wrong, please reload page.</div>
+      <div v-else-if="isLoading">loading data...</div>
+      <div v-else>
+        {{ post.data.contracts }}
+        <ContractPreview
+          class="foo"
+          v-for="contract in post.data.contracts"
+          :key="contract.id"
+          :faction_id="contract.faction_id"
+          :faction_name="contract.faction_name"
+          :status="contract.status"
+          :cssS="foo"
+        />
+      </div>
       <div class="col-4 contract-preview">
         <div class="p-3 border">1 of two columns</div>
       </div>
@@ -11,57 +25,41 @@
       <div class="col-4 contract-preview">
         <div class="p-3 border">3 of two columns</div>
       </div>
-
-      <ContractPreview
-        v-for="contract in contracts"
-        :key="contract.id"
-        :title="contract.title"
-        :cssS="'col-4'"
-      />
     </div>
   </div>
-  <div class="container" id="contract-detail">
+  <!-- <div class="container" id="contract-detail">
     <ContractDetail :cssS="'col'" />
-  </div>
+  </div> -->
 </template>
 
 <script setup>
-import { ref } from "vue";
-
 import ContractPreview from "../components/ContractPreview.vue";
-import ContractDetail from "../components/ContractDetail.vue";
-
-const contracts = ref([
-  { id: 1, title: "My journey with Vue" },
-  { id: 2, title: "Blogging with Vue" },
-  { id: 3, title: "Why Vue is so fun" },
-  // { id: 1, title: "My journey with Vue" },
-  // { id: 2, title: "Blogging with Vue" },
-  // { id: 3, title: "Why Vue is so fun" },
-]);
 </script>
-<!-- <script>
+
+<script>
+// import { ref } from "vue";
+import wtftoolsapi from "@/services/wtftoolsapi";
+// import ContractDetail from "../components/ContractDetail.vue";
 export default {
+  props: {
+    id: String,
+  },
   data: () => ({
-    isLoading: false,
+    post: null,
     isError: false,
+    isLoading: true,
   }),
-  methods: {
-    async getContracDetails() {
-      try {
-        this.isLoading = true;
-        const url = "https://api.wtftools.port203.de/revive";
-        const { data } = await this.$http.post(url, { name: "something" });
-        console.log(data);
-        // example response: { id: 1, name: "something" }
-      } catch (err) {
-        // uh oh, didn't work, time for plan B
-        console.log(err);
-        this.isError = true;
-      } finally {
-        this.isLoading = false;
-      }
-    },
+  async created() {
+    try {
+      this.isLoading = true;
+      this.post = await wtftoolsapi.getContracts();
+      console.log(this.post);
+    } catch (error) {
+      console.log(error);
+      this.isError = true;
+    } finally {
+      this.isLoading = false;
+    }
   },
 };
-</script> -->
+</script>

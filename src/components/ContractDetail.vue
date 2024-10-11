@@ -17,7 +17,7 @@ export default {
   data: () => ({
     post: null,
     isError: false,
-    isLoading: false,
+    isLoading: true,
   }),
   async created() {
     try {
